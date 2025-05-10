@@ -3,52 +3,43 @@ package com.ProyectoFinal.ProyectoFinalIntegrador.Controlador;
 import com.ProyectoFinal.ProyectoFinalIntegrador.Modelos.AppUser;
 import com.ProyectoFinal.ProyectoFinalIntegrador.Modelos.RegistroDto;
 import com.ProyectoFinal.ProyectoFinalIntegrador.Respositorios.AppUserRespositorio;
-import jakarta.validation.Valid;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/auth")
 public class CuentaControlador {
+
     @Autowired
     private AppUserRespositorio repo;
-    @GetMapping("/registrar")
-    public String registrar(Model modelo){
-        RegistroDto registroDto = new RegistroDto();
-        modelo.addAttribute("registrarDto", registroDto);
-        modelo.addAttribute("success", false);
-        return "registrar";
-    }
-    
-    @GetMapping("/perfil")
-    public String Perfil(Authentication auth, Model modelo){
-        AppUser user= repo.findByEmail(auth.getName());
-        modelo.addAttribute("appUser", user);
-        return "profile";
-    }
-    
+
     @PostMapping("/registrar")
-    public String registrar(Model modelo, @Valid @ModelAttribute("registrarDto") RegistroDto registroDto, BindingResult result){
-        if(!registroDto.getContraseña().equals(registroDto.getConfirmarcontraseña())){
-            result.addError(new FieldError("registrarDto", "confirmarcontraseña", "Las contraseñas no coinciden"));
+    public ResponseEntity<?> registrar(@RequestBody RegistroDto registroDto) {
+        System.out.println("Intentando registrar usuario...");
+        Map<String, Object> response = new HashMap<>();
+
+        // Validación de contraseñas
+        if (!registroDto.getContraseña().equals(registroDto.getConfirmarcontraseña())) {
+            response.put("success", false);
+            response.put("message", "Las contraseñas no coinciden");
+            return ResponseEntity.badRequest().body(response);
         }
+
+        // Validación de email existente
         AppUser appUser = repo.findByEmail(registroDto.getEmail());
-        if(appUser !=null){
-            result.addError(new FieldError("registrarDto", "email","Esta direccion de correo ya esta en uso"));
+        if (appUser != null) {
+            response.put("success", false);
+            response.put("message", "Esta dirección de correo ya está en uso");
+            return ResponseEntity.badRequest().body(response);
         }
-        if(result.hasErrors()){ 
-            modelo.addAttribute("success", false);
-            return "registrar"; 
-        }
-        try{
+
+        try {
             var bCryptEncoder = new BCryptPasswordEncoder();
             AppUser newUser = new AppUser();
             newUser.setNombre(registroDto.getNombre());
@@ -60,12 +51,14 @@ public class CuentaControlador {
             newUser.setFechacreacion(new Date());
             newUser.setContraseña(bCryptEncoder.encode(registroDto.getContraseña()));
             repo.save(newUser);
-            modelo.addAttribute("registrarDto", new RegistroDto());
-            modelo.addAttribute("success", true);
-        }catch(Exception ex){
-            result.addError(new FieldError("registrarDto", "nombre", ex.getMessage()));
-            modelo.addAttribute("success", false);
+
+            response.put("success", true);
+            response.put("message", "Usuario registrado correctamente");
+            return ResponseEntity.ok(response);
+        } catch (Exception ex) {
+            response.put("success", false);
+            response.put("message", ex.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
-        return "registrar";
     }
 }
