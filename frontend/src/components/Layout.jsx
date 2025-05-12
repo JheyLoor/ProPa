@@ -24,88 +24,64 @@ const Layout = ({ children }) => {
 
   return (
     <div className="layout">
-      <nav className="navbar-custom">
-        <div className="nav-left">
-          <Link to="/" className="brand">
-            <span role="img" aria-label="logo">🍼</span> Pañalería <span className="brand-highlight">Claudia</span>
+      <nav className="navbar">
+        <div className="container">
+          <Link to="/" className="logo">
+            Pañalería <span>Claudia</span>
           </Link>
-          <div className="nav-links-custom">
+          <div className="nav-links">
             <Link to="/">Inicio</Link>
-            <Link to="/pañaleria">Pañalería</Link>
-            <Link to="/higiene">Higiene</Link>
+            <Link to="/productos">Productos</Link>
+            <Link to="/promociones">Promociones</Link>
+            <Link to="/nosotros">Nosotros</Link>
+            <Link to="/contacto">Contacto</Link>
           </div>
-        </div>
-        <div className="nav-right">
-      {!isLoggedIn && (
-        <>
-          <Link to="/login" className="icon-link">
-            <span role="img" aria-label="login">🔑</span> Iniciar sesión
-          </Link>
-          <Link to="/registrar" className="icon-link">
-            <span role="img" aria-label="register">👤</span> Registrarse
-          </Link>
-        </>
-      )}
-      {isLoggedIn && (
-        <>
-          <span className="icon-link user-name">
-            <span role="img" aria-label="user">👤</span> {nombre || 'Usuario'}
-          </span>
-          <button
-            className="icon-link"
-            onClick={handleLogout}
-          >
-            <span role="img" aria-label="logout">🚪</span> Cerrar sesión
-          </button>
-        </>
-      )}
-          <span className="icon-link"><span role="img" aria-label="search">🔍</span></span>
-          <span className="icon-link"><span role="img" aria-label="cart">🛒</span></span>
+          <div className="nav-actions">
+            <button className="search-btn">
+              <span role="img" aria-label="search">🔍</span>
+            </button>
+            <Link to="/cart" className="cart-btn">
+              <span role="img" aria-label="cart">🛒</span>
+              <span className="cart-count">0</span>
+            </Link>
+            {!isLoggedIn ? (
+              <div className="auth-buttons">
+                <Link to="/login" className="login-btn">Iniciar Sesión</Link>
+                <Link to="/registrar" className="register-btn">Registrarse</Link>
+              </div>
+            ) : (
+              <div className="user-menu">
+                <span className="user-name">{nombre}</span>
+                <button onClick={handleLogout} className="logout-btn">
+                  Cerrar sesión
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
-      <main className="main-content">
-        {children}
-      </main>
-      <footer className="footer-custom">
-        <div className="footer-col">
-          <div className="footer-brand">
-            <span className="brand-highlight">Pañalería Claudia</span>
+      <main>{children}</main>
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-content">
+            <div className="footer-section">
+              <h3>Pañalería Claudia</h3>
+              <p>Todo lo que necesitas para el cuidado de tu bebé</p>
+            </div>
+            <div className="footer-section">
+              <h3>Enlaces</h3>
+              <Link to="/">Inicio</Link>
+              <Link to="/productos">Productos</Link>
+              <Link to="/promociones">Promociones</Link>
+              <Link to="/nosotros">Nosotros</Link>
+            </div>
+            <div className="footer-section">
+              <h3>Contacto</h3>
+              <p>📍 Dirección del local</p>
+              <p>📞 Teléfono de contacto</p>
+              <p>✉️ Email de contacto</p>
+            </div>
           </div>
-          <p>
-            Todo lo que necesitas para el cuidado de tu bebé, con los mejores precios y la mejor calidad.
-          </p>
-          <div className="footer-social">
-            <a href="#"><span role="img" aria-label="facebook">📘</span></a>
-            <a href="#"><span role="img" aria-label="instagram">📸</span></a>
-          </div>
-        </div>
-        <div className="footer-col">
-          <h4>Enlaces rápidos</h4>
-          <ul>
-            <li><Link to="/">Inicio</Link></li>
-            <li><Link to="/pañaleria">Productos</Link></li>
-            <li><Link to="/promociones">Promociones</Link></li>
-            <li><Link to="/nosotros">Nosotros</Link></li>
-            <li><Link to="/contacto">Contacto</Link></li>
-          </ul>
-        </div>
-        <div className="footer-col">
-          <h4>Información</h4>
-          <ul>
-            <li><a href="#">Términos y condiciones</a></li>
-            <li><a href="#">Política de privacidad</a></li>
-            <li><a href="#">Política de envíos</a></li>
-            <li><a href="#">Devoluciones</a></li>
-            <li><a href="#">Preguntas frecuentes</a></li>
-          </ul>
-        </div>
-        <div className="footer-col">
-          <h4>Contacto</h4>
-          <ul>
-            <li>Av. Principal 123, Ciudad de México, México</li>
-            <li>+52 55 1234 5678</li>
-            <li><a href="mailto:contacto@panaleriaclaudia.com">contacto@panaleriaclaudia.com</a></li>
-          </ul>
         </div>
       </footer>
     </div>

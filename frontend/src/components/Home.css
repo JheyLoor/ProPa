@@ -3,17 +3,33 @@
 }
 
 .hero {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 4rem 2rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  margin-bottom: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: calc(100vh - 200px);
+  background: linear-gradient(135deg, #e8f0fe 0%, #fff5f5 100%);
+  border-radius: 20px;
+  margin: 2rem auto;
 }
 
-.hero h1 {
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 1rem;
+.hero-content {
+  flex: 1;
+  padding-right: 4rem;
+}
+
+h1 {
+  font-size: 3.5rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.highlight {
+  display: block;
+  color: #4a90e2;
 }
 
 .hero p {
@@ -22,56 +38,66 @@
   margin-bottom: 2rem;
 }
 
-.cta-buttons {
+.hero-buttons {
   display: flex;
   gap: 1rem;
-  justify-content: center;
 }
 
-.cta-button {
-  padding: 0.8rem 1.5rem;
-  background-color: #3498db;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.cta-button:hover {
-  background-color: #2980b9;
-}
-
-.features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  padding: 2rem 0;
-}
-
-.feature-card {
-  background-color: white;
-  padding: 2rem;
+.btn {
+  padding: 1rem 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.feature-card h3 {
-  color: #2c3e50;
-  margin-bottom: 1rem;
-}
-
-.feature-card p {
-  color: #666;
-  margin-bottom: 1.5rem;
-}
-
-.feature-card a {
-  color: #3498db;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
+  transition: all 0.3s;
 }
 
-.feature-card a:hover {
-  text-decoration: underline;
-} 
+.btn-primary {
+  background: #4a90e2;
+  color: white;
+}
+
+.btn-secondary {
+  background: white;
+  color: #4a90e2;
+  border: 1px solid #4a90e2;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 968px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-content {
+    padding-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+}
